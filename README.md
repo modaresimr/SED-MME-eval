@@ -19,6 +19,9 @@ res1=mme_eval.multi_eval.get_single_result_df(groundtruth,perediction,metadata,d
 ```
 
 
-```python
 
+# Installation
+
+Please run the following line in the command prompt to install the metric
 ```
+python setup.py```
