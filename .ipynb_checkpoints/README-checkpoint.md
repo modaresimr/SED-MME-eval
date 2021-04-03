@@ -5,7 +5,7 @@ This tool prepare a multimodal evaluation for Sound Event Detection (SED) system
 
 Please install Jupyter and open this notebook [SED-MME-eval.ipynb](SED-MME-eval.ipynb) 
 
-or you can use the offline version in [docs/SED-MME-eval.html](docs/SED-MME-eval.html) 
+or you can use the offline version in [docs/SED-MME-eval.md](docs/SED-MME-eval.md) 
 
 
 # Installation
