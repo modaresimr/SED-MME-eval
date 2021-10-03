@@ -27,14 +27,14 @@ def psds_metric(dtc_threshold, gtc_threshold, cttc_threshold, ground_truth, meta
 
         return dic
 
-def compute_mme(ground_truth, metadata, predictions ,debug=0):
+def compute_mme(ground_truth, metadata, predictions ,debug=[]):
     from . import mme as m
     ev= m.eval(ground_truth,predictions,metadata,debug=debug)
     mm=ev[list(ev.keys())[0]].keys()
     out={m:{c:{'Ntp':ev[c][m]['tp'],'Nfp':ev[c][m]['fp'],'Nfn':ev[c][m]['fn'],'Ntn':ev[c][m]['tn']}  for c in ev} for m in mm}
     return out
             
-def get_single_result(gtf,pef,metaf=None,psdsf=None,debug=0):
+def get_single_result(gtf,pef,metaf=None,psdsf=None,debug=[]):
     res={'macro_avg','micro_avg','class'}
 
     # gem=computeGem(gtf,pef)          
@@ -49,7 +49,7 @@ def get_single_result(gtf,pef,metaf=None,psdsf=None,debug=0):
     # print(meta_df)
     return get_single_result_df(groundtruth,predictions,meta_df,debug=debug)
 
-def get_single_result_df(groundtruth,predictions,meta_df=None,psdsf=None,debug=0):
+def get_single_result_df(groundtruth,predictions,meta_df=None,psdsf=None,debug=[]):
     out={}
     if meta_df is None:
         meta_df=pd.DataFrame(groundtruth.append(predictions).groupby(['filename'])['offset'].max().rename('duration'))
@@ -102,3 +102,26 @@ def get_single_result_df(groundtruth,predictions,meta_df=None,psdsf=None,debug=0
         out[m]=calcs(pd.DataFrame(mme[m]))
     # print(out)
     return out
+
+
+def array2SED(g,p,duration,path=None):  
+    gdf=pd.DataFrame(g,columns=['onset','offset'])
+    gdf['event_label']='Test'
+    gdf['filename']='Test'
+    gdf=gdf[['filename','onset','offset','event_label']]
+    pdf=pd.DataFrame(p,columns=['onset','offset'])
+    pdf['event_label']='Test'
+    pdf['filename']='Test'
+    pdf=pdf[['filename','onset','offset','event_label']]
+    meta_df=pd.DataFrame(columns=['filename','duration'])
+    meta_df['filename']=gdf['filename'].unique()
+#     meta_df['duration']=max(gdf['offset'].max(),pdf['offset'].max())
+    meta_df['duration']=duration
+    if path != None:
+        import os
+        from pathlib import Path
+        Path(path).mkdir(parents=True, exist_ok=True)
+        meta_df.to_csv(f'{path}/meta.tsv',sep='\t',index=False)
+        pdf.to_csv(f'{path}/p.tsv',sep='\t',index=False)
+        gdf.to_csv(f'{path}/g.tsv',sep='\t',index=False)
+    return gdf,pdf,meta_df
