@@ -1,0 +1,9 @@
+numpy
+pandas
+wget
+ipympl
+intervaltree
+dcase_util
+scipy
+psds_eval
+matplotlib

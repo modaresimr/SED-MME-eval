@@ -12,7 +12,8 @@ Please install Jupyter and open this notebook [SED-MME-eval.ipynb](SED-MME-eval.
 
 Please run the following line in the command prompt to install the metric
 ```
-python setup.py
+pip install -r requirements.txt
+pip install ./
 ```
 
 
